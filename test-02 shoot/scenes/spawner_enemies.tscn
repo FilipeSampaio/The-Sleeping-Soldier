@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/spawner_enemies.gd" type="Script" id=1]
+
+[node name="spawner_enemies" type="Node"]
+script = ExtResource( 1 )
+enemie_type = "pro"
+limit = 4
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

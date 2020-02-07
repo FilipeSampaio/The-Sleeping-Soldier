@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scripts/shooter.gd" type="Script" id=1]
+[ext_resource path="res://assets/player/idle.png" type="Texture" id=2]
+[ext_resource path="res://assets/player/back_flip3.png" type="Texture" id=3]
+[ext_resource path="res://assets/player/back_flip4.png" type="Texture" id=4]
+[ext_resource path="res://assets/player/back_flip1.png" type="Texture" id=5]
+[ext_resource path="res://assets/player/back_flip2.png" type="Texture" id=6]
+
+[sub_resource type="CapsuleShape2D" id=1]
+height = 42.9604
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": false,
+"name": "back_flip",
+"speed": 5.0
+} ]
+
+[node name="shooter" type="KinematicBody2D"]
+collision_mask = 2
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+self_modulate = Color( 0.592157, 1, 0, 1 )
+position = Vector2( -0.000678539, -0.00601864 )
+shape = SubResource( 1 )
+
+[node name="shoot_time" type="Timer" parent="."]
+wait_time = 0.3
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "back_flip"
+
+[node name="dir_node" type="Node2D" parent="."]
+position = Vector2( 0.00809836, -0.00274229 )
+
+[node name="muzzle" type="Position2D" parent="dir_node"]
+position = Vector2( -0.000617027, -0.00431418 )
+
+[node name="RayCast2D" type="RayCast2D" parent="dir_node"]
+rotation = -1.5708
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="timeout" from="shoot_time" to="." method="_on_shoot_time_timeout"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]
